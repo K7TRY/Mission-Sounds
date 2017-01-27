@@ -12,5 +12,3 @@ Note the libavcodec-extra version number may be higher or lower depending on the
 Since the app uploads and converts videos it is important to make sure that the web server user has permission to write to yt3 directory.
 
 There is no need for a database server. The requirements called for a light load, so the app uses a text file to store comma separated values. The text file is read, parsed and displayed by the admin script. 
-
-There are several improvements that could be made to this app. It was written in a day and a half in response to an idea at a meeting early on the first day of development. So please do not judge it too harshly. 
