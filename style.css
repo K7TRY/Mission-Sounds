@@ -1,0 +1,178 @@
+html{
+  color: white;
+  background-color: #eee;
+  font-family: helvetica, sans-serif;
+}
+#postScreen{
+  display: none;
+}
+#resultsScreen{
+  display: none;
+}
+#alert{
+  position: fixed;
+  width: 30%;
+  height: 50px;
+  top: 40%;
+  right: 35%;
+  background-color: #B71137;
+  box-shadow: 10px 10px rgba(0,0,0,.5);
+  text-align: center;
+  border-radius: 2px;
+  border: solid 1px #840C28;
+  display: none;
+}
+.header{
+  margin: auto;
+  color: #B71137;
+}
+#header img{
+  width: 100px;
+  display: block;
+  margin: auto;
+}
+.header h1{
+  text-align: center;
+}
+td a, th a{
+  color:white;
+  text-decoration: none;
+}
+td a:hover, th a:hover{
+  text-decoration: underline;
+}
+body{
+  width:50%;
+  margin: auto;
+}
+form{
+  width: 300px;
+  margin:auto;
+
+  background-color: #B71137;
+  border-radius: 5px;
+  padding: 20px;
+    margin-bottom: 50px;
+    margin-top: 50px;
+    box-shadow: 5px 5px rgba(0,0,0,.5);
+
+}
+label{
+  display: inline-block;
+  width: 80%;
+}
+
+input{
+  width: 100%;
+
+}
+.info{
+  width: 60%;
+  margin-bottom: 10px;
+}
+.buttons{
+  width: 100%;
+  margin: auto;
+  text-align: center;
+}
+.button{
+  margin: 2px;
+  background-color: #B71137;
+  border-color: #840C28;
+  color: white;
+}
+
+.buttonDiv{
+	display: block;
+	width: 80%;
+	margin: 0 auto 0 auto;
+	text-align: center;
+}
+
+h4{
+  color: black;
+}
+
+ table#recordingstable{
+  width: 80%;
+  min-width: 300px;
+    border-collapse: collapse;
+    box-shadow: 5px 5px rgba(0,0,0,.5);
+    color: white;
+    background-color: #B71137;
+	margin-top: 10px;
+
+}
+table#recordingstable tr {
+border-bottom: 1px solid
+}
+td{
+  border-collapse: collapse;
+  padding: 5px;
+  font-weight:normal;
+  border: 1px solid
+}
+th{
+  text-align: left;
+  border: solid 1px;
+  padding: 5px;
+  font-weight: bold;
+  background-color:#333;
+}
+.right{
+  float: right;
+  text-align: right;
+}
+.record{
+  color: transparent;
+  background-color: transparent;
+  background-image: url("../img/swatch.png");
+  background-repeat: no-repeat;
+  background-position: 100% 100%;
+  background-size: 110px;
+  border: none;
+  height: 50px;
+  width: 50px;
+  margin-left: 125px;
+  margin-top: 50px;
+}
+#recordings{
+  color: #B71137;
+      border-top: solid 2px #aaa;
+    padding-top: 10px;
+    margin-top: 10px;
+
+}
+#current-audio{
+  display: none;
+}
+.even{
+  background-color: #B71137;
+}
+.odd{
+  background-color: #840C28;
+}
+
+label#audioRecordLabel{
+  width: 100%;
+  text-align: center;
+line-height:150%
+}
+
+@media screen and (max-width: 720px) {
+    body {
+        width: 100%;
+    }
+    form{
+      width: 80%;
+    }
+    table{
+      width: 80%;
+      min-width: 0px;
+      margin: auto;
+    }
+    .recordings{
+      margin:auto;
+    }
+}
+

@@ -1,0 +1,43 @@
+CACHE MANIFEST
+# 2014-03-01:v2.00048
+# You must modify the manifest file itself to inform the browser to refresh cached files.
+# Creating a comment line with a generated version number, hash of your files, or timestamp is one way to ensure users have the
+# latest version of your software. 
+
+NETWORK:
+* # Use network files when the network is connected.
+# Files listed under this section are white-listed resources that require a connection to the server. 
+# All requests to these resources bypass the cache, even if the user is offline. Wildcards may be used.
+
+FALLBACK:
+# An optional section specifying fallback pages if a resource is inaccessible. The first URI is the resource, the second is the fallback. 
+# Both URIs must be relative and from the same origin as the manifest file. Wildcards may be used.
+
+CACHE:
+# This is the default section for entries. 
+# Files listed under this header (or immediately after the CACHE MANIFEST) will be explicitly cached after they're downloaded for the first time.
+# index.html # This should have actually been cached because it links to this manifest.=
+
+################################ 
+## Written By Theo and Taylor @ Urbana 12/29/2015 ## 
+
+js/jquery-1.7.2.min.js 
+i/loading.gif
+i/MAF_Logo.svg
+js/WebRTC/adapter.js
+js/WebRTC/RecordRTC.js
+js/WebRTC/RecordRTC.min.js 
+default.css
+style.css
+
+################################
+
+# Once an application is offline it remains cached until one of the following happens:
+
+# 1. The user clears their browser's data storage for your site.
+# 2. The manifest file is modified. 
+#		Note: updating a file listed in the manifest doesn't mean the browser will re-cache that resource. 
+#		The manifest file itself must be altered.
+# 3. The app cache is programatically updated.
+
+# More info at: http://www.html5rocks.com/en/tutorials/appcache/beginner/

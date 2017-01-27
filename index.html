@@ -1,0 +1,372 @@
+<!DOCTYPE HTML>
+<html manifest="urbana.appcache" lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Mission Sounds</title>
+	<link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+	<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="/android-chrome-192x192.png" sizes="192x192">
+	<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+	<link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+	<link rel="manifest" href="/manifest.json">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+	<meta name="msapplication-TileColor" content="#da532c">
+	<meta name="msapplication-TileImage" content="/mstile-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+	
+	<meta property="og:title" content="Mission Aviation Fellowship - Mission Sounds"/>
+	<meta property="og:site_name" content="Mission Aviation Fellowship - Mission Sounds"/>
+	<meta property="og:type" content="website"/>
+	<meta property="og:description" content="Please record your mission sounds. Then fill out the form and submit."/>
+
+	<meta property="og:locale" content="en_US" />
+	<link rel="stylesheet" type="text/css" href="./default.css">
+	<link rel="stylesheet" type="text/css" href="./style.css">
+</head>
+<body>
+	<div class="header"><h1>Mission Aviation Fellowship</h1></div>
+	<h4>Mission Aviation Fellowship<br>Mission Sounds</h4>
+	<div id="postScreen">
+		<div id="postMessage">Uploading... Please wait</div>
+		<img id="loadingImage" src="./i/loading.gif">
+	</div>
+	<div id="resultsScreen">
+		<div id="closeBtn">&#10006;</div>
+		<div id="resultsMessage"></div>
+	</div>
+	
+	<!-- <div class="fieldDiv">Please record a short answer to our question. <span id="nonMediaBrowser"> Click the "Record Your Answer" button below and select your devices audio or low quality video recorder to record your answer.</span> Then fill out the form and submit.</div> -->
+	<form id="question_form" name="question_form" enctype="multipart/form-data" method="POST" action="save.php"> 
+		
+		<div id="RTCrecordControls" class="fieldDiv">
+			<label id="audioRecordLabel" for="userMediaRecord"><span id='mic'>&#128227;</span> <span id='micText'>Record Your Mission Sounds</span></label>
+			<input type="button" id="userMediaRecord" style="display:none" />
+			<input id="audioRecording" name="audioRecording" type="file" accept="audio/*;capture=microphone" style="display:none">
+			
+			<audio id="preview" controls style="width: 100%; margin:10px 0 10px 0; display:none"></audio>
+		</div>
+			
+		<div class="fieldDiv" style="display:none">
+			or
+		</div>
+		
+		<div class="fieldDiv">
+			<label for="name">Your name</label>
+			<input type="text" id="name" name="name" required="required" placeholder="&#9733; Required" class="oneLine"/>
+		</div>
+		
+		<div class="fieldDiv">
+			<label for="email">E-mail</label>
+			<input type="email" id="email" name="email" required="required" placeholder="&#9733; Required" class="oneLine"/>
+		</div>
+		
+		<div class="fieldDiv">
+			<label for="phone">Phone #</label>
+			<input type="tel" id="phone" name="phone" placeholder="Optional" class="oneLine"/>
+		</div>
+		
+		<!--<div class="fieldDiv">
+			<input id="submitBtn" type="submit" value="Submit" class="button">
+		</div>
+	-->
+		
+	</form>
+	<div class="buttonDiv">
+			<button class="button"  onclick="saveRecording()"> Save </button>
+			<button class="button"  onclick="displayRecordings()"> Display Recordings </button>
+
+			<!--button class="button"  onclick="restoreLocal()"> Restore Local </button-->
+			<button class="button"  onclick="resetLocal()"> Reset Local </button>
+			<button class="button"  onclick="sendAllData()"> Upload </button> 
+	</div>
+	
+	<div id="recordings"></div>
+
+	<script src="./js/jquery-1.7.2.min.js"></script>
+	<!-- script used for audio/video/gif recording -->
+	<script src="./js/WebRTC/RecordRTC.js"></script>
+	<!-- for Edge/FF/Chrome/Opera/etc. getUserMedia support -->
+    <script src="./js/WebRTC/adapter.js"></script>
+	
+	<script type="text/javascript">
+
+	// new code
+	var recordings = [];
+		// submit function to save current recording with attributes
+		function saveRecording()
+		{
+			if (!recordAudio){
+				alert("No recording found. Please record a message.");
+				return false; 
+			}
+
+			var form = document.getElementById('question_form');
+
+			var name = form.elements['name'].value;
+			var email = form.elements['email'].value;
+			var phone = form.elements['phone'].value;
+
+			var cur = {};
+			cur['name']=name;
+			cur['email']=email;
+			cur['phone']=phone;
+			cur['audio']=recordAudio; 
+			cur['local'] = false;
+
+			var time = new Date();
+
+			cur['time']=time;
+			recordings.push(cur);
+
+			//recordAudio = null;
+			console.log("Saved");
+
+			saveToLocal();
+			
+			displayRecordings();
+		}
+
+		function saveToLocal()
+		{
+			// local storage 
+			var backupArray = [];
+			for (var i = 0; i < recordings.length; i++)
+			{
+				var cur = recordings[i];
+				var curAudioBlob = cur['audio'].blob;
+				
+				var fileReader = new FileReader();
+				fileReader.onload = function() {
+					var object = {
+						name: cur['name'],
+						email: cur['email'],
+						phone: cur['phone'],
+						time: cur['time'],
+						blobURL: this.result,
+						local:true
+					};
+					backupArray.push(object);
+					localStorage.setItem(cur['time'], JSON.stringify(backupArray));
+				};
+				fileReader.readAsDataURL(curAudioBlob);
+				
+				recordAudio = null;
+				var preview = $('#preview')[0];
+				preview.style.display="none";
+				preview.src = '';
+			}
+		}
+
+		function restoreLocal()
+		{
+			console.log("Restoring Local");
+			for (var i = 0; i < localStorage.length; i++)
+			{
+				var recordingsBackup = JSON.parse(localStorage.getItem(localStorage["key"](i)));
+				
+				//dataURItoBlob
+				console.log(recordingsBackup);
+				if (!recordingsBackup)
+					return false;
+				
+				recordings.push(recordingsBackup[0]);
+				console.log("Resotrored");
+				console.log(recordings);
+
+				displayRecordings();
+			}
+		}
+
+		function resetLocal()
+		{
+			for (var i = 0; i < localStorage.length; i++)
+			{
+				localStorage.removeItem(localStorage["key"](0));
+			}
+			recordings = [];
+			displayRecordings();
+		}
+
+		function displayRecordings()
+		{
+
+			//console.log(data[0]);
+
+			var text = "Recordings! <br>";
+			var t = "";
+
+			text += "<table id='recordingstable'>";
+
+			t += "<thead><tr>";
+			t += "<th>#</th>";
+			t += "<th>Name</th>";
+			t += "<th>Email</th>";
+			t += "<th>Phone</th>";
+			t += "<th>Time</th>";
+			t += "</tr><thead>";
+			text += t;
+
+			
+			for (var i = 0; i < recordings.length; i++)
+			{
+				var cur = recordings[i];
+
+				t = "";
+				t += "<tr>";
+				t += "<td>" + (i + 1) + "</td>";
+				t += "<td>" + cur['name'] + "</td>";
+				t += "<td>" + cur['email'] + "</td>";
+				t += "<td>" + cur['phone'] + "</td>";
+				t += "<td>" + cur['time'] + "</td>";
+				t += "</tr><tr>";
+
+				if (cur['local'])
+				{
+					console.log("running");
+					console.log(cur['blobURL']);
+					t += "<td colspan=5>" + "<audio controls src=" + cur['blobURL'] + " style='width: 100%; margin:10px 0 10px 0; display:block'></audio>" + "</td>";  
+				}
+				else
+				{
+					t += "<td colspan=5>" + "<audio controls src=" + cur['audio'].toURL() + " style='width: 100%; margin:10px 0 10px 0; display:block'></audio>" + "</td>";  
+				}
+
+				//console.log(cur['audio']);
+				//console.log("blob");
+				//console.log(cur['audio'].blob);
+				//console.log(fileReader.readAsDataURL(cur['audio'].getBlob()));
+				t += "</tr>";
+
+				text += t;
+			}
+			text += "</table>";
+
+			document.getElementById("recordings").innerHTML = text;
+		}
+
+
+
+
+		var recordLabel = $('#audioRecordLabel')[0];
+		var nowRecording = false;
+		var recordAudio;
+		
+		$(document).ready(function(){
+			if(!navigator.mediaDevices){
+				// Change the FOR of the label to activate the alt system.
+				recordLabel.htmlFor = "audioRecording";
+			//} else {
+			//	$('span#nonMediaBrowser')[0].style.display = "none";
+			}
+			restoreLocal();
+		});
+		
+		function sendData(MyFormData) {
+			var data = new FormData();
+
+			data.append('name', MyFormData.name);
+			data.append('email', MyFormData.email);
+			data.append('phone', MyFormData.phone);
+			data.append('timestamp', MyFormData.time);
+			if (MyFormData.local == true) {
+				console.log(MyFormData.blobURL);
+				newdata = dataURItoBlob(MyFormData.blobURL);
+				data.append('audioRecording', newdata);
+			} else {
+				data.append('audioRecording', MyFormData.audio.blob);
+			}
+
+			var posting = $.ajax({
+			  url: "save.php",
+			  type: "POST",
+			  data: data,
+			  processData: false,  // tell jQuery not to process the data
+			  contentType: false   // tell jQuery not to set contentType
+			});
+
+			return false;
+		}
+
+		function sendAllData(){
+			var arrayData = recordings;
+			for (var i = 0; arrayData[i]; i++){
+				sendData(arrayData[i]);
+			}
+			alert("Recording Uploaded Successfully!");
+			
+		}
+
+		function dataURItoBlob(dataURI, callback) {
+			// convert base64 to raw binary data held in a string
+			// doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+			var byteString = atob(dataURI.split(',')[1]);
+
+			// separate out the mime component
+			var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+
+			// write the bytes of the string to an ArrayBuffer
+			var ab = new ArrayBuffer(byteString.length);
+			var ia = new Uint8Array(ab);
+			for (var i = 0; i < byteString.length; i++) {
+				ia[i] = byteString.charCodeAt(i);
+			}
+
+			// write the ArrayBuffer to a blob, and you're done
+			var bb = new Blob([ab]);
+			return bb;
+		}
+
+		function captureUserMedia(mediaConstraints, successCallback, errorCallback) {
+			navigator.mediaDevices.getUserMedia(mediaConstraints).then(successCallback).catch(errorCallback);
+		}
+
+		$('#userMediaRecord')[0].onclick = function() {
+			if(!nowRecording){
+				nowRecording = true;
+				$('#preview')[0].pause();
+				
+				captureUserMedia({
+					audio: true
+				}, function(stream) {
+					// var legalBufferValues = [256, 512, 1024, 2048, 4096, 8192, 16384];
+					// sample-rates in at least the range 22050 to 96000.
+					recordAudio = RecordRTC(stream, {
+						//bufferSize: 8192,
+						//sampleRate: 22050 
+					});
+
+					recordAudio.startRecording();
+					recordLabel.innerHTML = "<span id='mic'>&#128306;</span> <span id='micText'>Stop Recording</span>";
+					
+				}, function(error) {
+					recordLabel.innerHTML = "<span id='mic'>&#128227;</span> <span id='micText'>Record Your Mission Sounds</span>";
+					alert(JSON.stringify(error));
+				});
+			} else {
+				nowRecording = false;
+				recordLabel.innerHTML = "<span id='mic'>&#128227;</span> <span id='micText'>Re-record Your Mission Sounds</span>";
+				recordAudio.stopRecording(function(url) {
+					var fileReader = new FileReader();
+					fileReader.onload = function() {
+						var preview = $('#preview')[0];
+						preview.style.display="block";
+						preview.src = this.result;
+						preview.play();
+					};
+					fileReader.readAsDataURL(recordAudio.getBlob());
+				});
+			}
+		};
+		
+	</script>
+	</body>
+</html>

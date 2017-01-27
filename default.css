@@ -1,0 +1,174 @@
+html {
+	height:98%;
+	width:98%;
+	font-family: calibri, helvetica, sans-serif;
+	font-size: 1.2em;
+	margin: 0 auto 0 auto;
+	max-width: 1000px;
+}
+
+body {
+	margin:0;
+	padding:5px; 
+	height:98%;
+	width: 98%;
+	margin: 0 auto 0 auto;
+}
+
+.header {
+	display: block;
+	position: relative;
+	height: 85px;
+	width: 200px;
+	overflow: display; 
+	margin: 0 auto 0 auto;
+	background-size: 100%; 
+	background-image: url('./i/MAF_Logo.svg'); 
+	background-position: center top; 
+	background-repeat: no-repeat no-repeat;
+	z-index: 800;
+}
+
+.header h1 {
+	display: none;
+}
+
+h4, h3 {
+	display: block;
+	margin: 25px auto 15px auto;
+	text-align: center;
+}
+
+div.fieldDiv{
+	display:block;
+	text-align:left;
+	margin: 5px auto 0 auto;
+	width: 90%;
+}
+
+label{
+	display:block;
+	margin-top:1px;
+	width: 100%;
+}
+
+label#audioRecordLabel, input, textarea {
+	display:block;
+	width: 100%;
+	font-size: 1.2em;
+	margin:0;
+	padding:0;
+	line-height: 200%;
+	text-indent: 5px;
+	border : solid 1px black;
+	border-radius : 5px;
+	moz-border-radius : 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+}
+
+input.oneLine {
+	height: 2em;
+}
+
+label#audioRecordLabel, input.button {
+	margin: 10px 0 5px 0;
+	padding: 10px 0 10px 0;
+	text-align: center;
+	background-color: #light-gray;
+	border : solid 1px #000000;
+
+	color : #000000;
+	background : #f0f0f0;
+	background : -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f0f0f0), color-stop(100%,#c6c9cc));
+	background : -moz-linear-gradient(top, #f0f0f0 0%, #c6c9cc 100%);
+	background : -webkit-linear-gradient(top, #f0f0f0 0%, #c6c9cc 100%);
+	background : -o-linear-gradient(top, #f0f0f0 0%, #c6c9cc 100%);
+	background : -ms-linear-gradient(top, #f0f0f0 0%, #c6c9cc 100%);
+	background : linear-gradient(top, #f0f0f0 0%, #c6c9cc 100%);
+	filter : progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0f0f0', endColorstr='#c6c9cc',GradientType=0 );
+	cursor:pointer;
+}
+
+#mic
+{
+	font-size:x-large;
+	color: red;
+	cursor: pointer;
+	padding-right: 10px;
+}
+
+#micText
+{
+	font-weight: bold;
+	cursor: pointer;
+}
+
+div#postScreen, div#resultsScreen {
+	display:none;
+	position:absolute;
+	z-index:2;
+	background:#f7f7f7;
+	width: 100%;
+	height: 400%;
+	margin:0;
+	padding:0;
+	text-align: center;
+	cursor: wait;
+	overflow: hidden;
+	top: 0;
+	left: 0;
+}
+
+div#resultsScreen {
+	cursor: default;
+}
+
+div#postMessage, div#responseText {
+	margin: 25% auto auto auto;
+	font-size:x-large;
+	text-align: center;
+}
+
+div#closeBtn {
+	position:absolute;
+	z-index:1;
+	top: 8%;
+	left: 65%;
+	cursor: pointer;
+	font-size:x-large;
+}
+
+div#postScreen img {
+	margin: auto auto auto auto;
+	padding-top: 20px;
+}
+
+span.refCode {
+	font-size: large;
+	font-family: "Lucida Console", Monaco, monospace;
+}
+
+a.m-frame-close {
+	display: none;
+}
+
+#qotd {
+	font-style: italic;
+}
+
+.checkB {
+	display: inline;
+	width: 50%;
+}
+
+input[type='checkbox'] {
+	height: 1em;
+	width: 1em;
+	margin-top: 5px;
+}
+
+#zipcode{
+		display: none;
+		width: 8em;
+}
